@@ -10,29 +10,22 @@ namespace SnakeGame
         int speed = 100;
         Point fruit;
         Snake snake;
+        int score = 0;
 
         public Form1()
         {
             InitializeComponent();
-            this.Width = widht + 20; //For correction
+            this.Width = widht + 100; //For correction
             this.Height = height + 45;//For correction
-
-            this.snake = new Snake(new Point(20, 12), sizeOfSides);
+            
         }
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
             timer.Interval = speed;
-            timer.Start();
-            deltaX = 1;
-            GenerateFruit();
 
-            for (int i = 0; i < 2; i++)
-            {
-                snake.AddPart();
-            }
-
+            SnakeLaunchPreparation();
         }
 
 
@@ -44,6 +37,8 @@ namespace SnakeGame
                 {
                     snake.AddPart();
                     GenerateFruit();
+                    score += 10;
+                    this.lblScorePoints.Text = score.ToString();
                 }
                 else
                     snake.Move();
@@ -53,14 +48,16 @@ namespace SnakeGame
                 if (IsEatItself())
                 {
                     timer.Stop();
-                    MessageBox.Show("You lose");
+                  DialogResult dialogResult = MessageBox.Show("You lose","Ooooops",MessageBoxButtons.RetryCancel);
+                    DialogResultHandler(dialogResult);
                 }
                 Invalidate();
             }
             else
             {
                 timer.Stop();
-                MessageBox.Show("you lose");
+                DialogResult dialogResult = MessageBox.Show("You lose", "Ooooops", MessageBoxButtons.RetryCancel);
+                DialogResultHandler(dialogResult);
             }
 
         }
@@ -86,6 +83,18 @@ namespace SnakeGame
             }
 
             return false;
+        }
+
+        private void DialogResultHandler(DialogResult dialogResult)
+        {
+            if (dialogResult == DialogResult.Retry)
+            {
+                SnakeLaunchPreparation();
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
 
         private bool IsEatFruit()
@@ -145,6 +154,25 @@ namespace SnakeGame
                     break;
             }
         }
+        
+        private void SnakeLaunchPreparation()
+        {
+            this.snake = new Snake(new Point(20, 12), sizeOfSides);
+            for (int i = 0; i < 2; i++)
+            {
+                snake.AddPart();
+            }
+            GenerateFruit();
+
+            deltaX = 1;
+            deltaY = 0;
+
+            score = 0;
+            this.lblScorePoints.Text = score.ToString();
+
+            timer.Start();
+        }
+            
 
         private void DrawGrid(Graphics g)
         {
