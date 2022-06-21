@@ -12,6 +12,7 @@ namespace SnakeGame
 
         public Point Position { get; set; }
 
+
         public SnakePart(Point position, int size)
         { 
             this.Position = position;
@@ -29,6 +30,12 @@ namespace SnakeGame
         public void Draw(Graphics g, Brush brush)
         {
             g.FillRectangle(brush, new Rectangle(new Point(Position.X * size,Position.Y * size), new Size(size, size)));
+           
+        }
+        
+        public void DrawImage(Graphics g,string filePath)
+        {
+            g.DrawImage(Image.FromFile(filePath),this.Position.X*size,this.Position.Y* size, size,size);
         }
 
         public static bool operator ==(SnakePart a, SnakePart b)

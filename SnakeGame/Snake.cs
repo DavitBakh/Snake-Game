@@ -9,15 +9,18 @@ namespace SnakeGame
 {
     internal class Snake : IEnumerable<SnakePart>
     {
-        List<SnakePart> snakeParts = new List<SnakePart>();
+        List<SnakePart> snakeParts;
         int size;
 
         public Snake(Point position, int size)
         {
+            snakeParts = new List<SnakePart>();
+
             this.size = size;
 
             snakeParts.Add(new SnakePart(position, size));
         }
+
 
         public SnakePart this[int index]
         {
@@ -47,7 +50,7 @@ namespace SnakeGame
                 snakeParts[i].Position = snakeParts[i - 1].Position;
             }
         }
-       
+
         public void AddPart()
         {
             SnakePart snakePart = new SnakePart(this.GetTail());
@@ -58,12 +61,33 @@ namespace SnakeGame
             snakeParts.Add(snakePart);
         }
 
-        public void Draw(Graphics g)
+        public void Draw(Graphics g,MoveDirection moveDirection)
         {
+            string filePath = string.Empty;
+
+            switch (moveDirection)
+            {
+                case MoveDirection.Up:
+                    filePath = @"Images\SnakeUp.png";
+                    break;
+                case MoveDirection.Down:
+                    filePath = @"Images\SnakeDown.png";
+                    break;
+                case MoveDirection.Left:
+                    filePath = @"Images\SnakeLeft.png";
+                    break;
+                case MoveDirection.Right:
+                    filePath = @"Images\SnakeRight.png";
+                    break;
+            }
+
             foreach (SnakePart snakePart in snakeParts)
             {
                 if (snakePart == this.GetHead())
-                    snakePart.Draw(g, Brushes.Gray);
+                {
+                    snakePart.DrawImage(g,filePath);
+                }
+
                 else
                     snakePart.Draw(g, Brushes.DarkGreen);
             }

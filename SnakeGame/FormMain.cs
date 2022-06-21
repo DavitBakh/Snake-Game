@@ -1,29 +1,42 @@
 namespace SnakeGame
 {
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
+
+        int speed = 100;
+        int size = 25;
+
+
         int widht = 800;
         int height = 500;
-        int sizeOfSides = 20;
+
         int deltaX;
         int deltaY;
-        int speed = 100;
-        Point fruit;
-        Snake snake;
-        int score = 0;
 
-        public Form1()
+        Snake snake;
+         Point fruit;
+        
+        int score = 0;
+        MoveDirection moveDirection = MoveDirection.Right;
+
+        bool inhibitor = false;
+
+        public FormMain()
         {
             InitializeComponent();
             this.Width = widht + 100; //For correction
             this.Height = height + 45;//For correction
-            
+
         }
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
             timer.Interval = speed;
+            Icon icon = new Icon(@"Images\Snake Icon.ico", 100, 100);
+
+            this.Icon = icon;
+
 
             SnakeLaunchPreparation();
         }
@@ -31,6 +44,9 @@ namespace SnakeGame
 
         private void timer_Tick(object sender, EventArgs e)
         {
+            if (inhibitor)
+                inhibitor = false;
+
             if (!IsTouchBorders())
             {
                 if (IsEatFruit())
@@ -48,7 +64,7 @@ namespace SnakeGame
                 if (IsEatItself())
                 {
                     timer.Stop();
-                  DialogResult dialogResult = MessageBox.Show("You lose","Ooooops",MessageBoxButtons.RetryCancel);
+                    DialogResult dialogResult = MessageBox.Show("You lose", "Ooooops", MessageBoxButtons.RetryCancel);
                     DialogResultHandler(dialogResult);
                 }
                 Invalidate();
@@ -65,7 +81,7 @@ namespace SnakeGame
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             DrawGrid(e.Graphics);
-            snake.Draw(e.Graphics);
+            snake.Draw(e.Graphics, moveDirection);
             DrawFruit(e.Graphics);
         }
 
@@ -75,9 +91,9 @@ namespace SnakeGame
             SnakePart head = snake.GetHead();
 
             if ((head.Position.X + deltaX) < 0 ||
-                (head.Position.X + deltaX) * sizeOfSides >= widht ||
+                (head.Position.X + deltaX) * size >= widht ||
                 (head.Position.Y + deltaY) < 0 ||
-                (head.Position.Y + deltaY) * sizeOfSides >= height)
+                (head.Position.Y + deltaY) * size >= height)
             {
                 return true;
             }
@@ -122,42 +138,67 @@ namespace SnakeGame
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (inhibitor)
+                return;
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (deltaY != 1)
+                    if (moveDirection != MoveDirection.Down)
                     {
-                        deltaY = -1;
-                        deltaX = 0;
+                        moveDirection = MoveDirection.Up;
+                        inhibitor = true;
                     }
                     break;
                 case Keys.Down:
-                    if (deltaY != -1)
+                    if (moveDirection != MoveDirection.Up)
                     {
-                        deltaY = 1;
-                        deltaX = 0;
+                        moveDirection = MoveDirection.Down;
+                        inhibitor = true;
+
                     }
                     break;
                 case Keys.Left:
-                    if (deltaX != 1)
+                    if (moveDirection != MoveDirection.Right)
                     {
-                        deltaX = -1;
-                        deltaY = 0;
+                        moveDirection = MoveDirection.Left;
+                        inhibitor = true;
+
                     }
                     break;
                 case Keys.Right:
-                    if (deltaX != -1)
+                    if (moveDirection != MoveDirection.Left)
                     {
-                        deltaX = 1;
-                        deltaY = 0;
+                        moveDirection = MoveDirection.Right;
+                        inhibitor = true;
+
                     }
                     break;
             }
+
+            switch (moveDirection)
+            {
+                case MoveDirection.Up:
+                    deltaX = 0;
+                    deltaY = -1;
+                    break;
+                case MoveDirection.Down:
+                    deltaX = 0;
+                    deltaY = 1;
+                    break;
+                case MoveDirection.Left:
+                    deltaX = -1;
+                    deltaY = 0;
+                    break;
+                case MoveDirection.Right:
+                    deltaX = 1;
+                    deltaY = 0;
+                    break;
+            }
         }
-        
+
         private void SnakeLaunchPreparation()
         {
-            this.snake = new Snake(new Point(20, 12), sizeOfSides);
+            this.snake = new Snake(new Point(20, 12), size);
             for (int i = 0; i < 2; i++)
             {
                 snake.AddPart();
@@ -172,31 +213,32 @@ namespace SnakeGame
 
             timer.Start();
         }
-            
+
 
         private void DrawGrid(Graphics g)
         {
-            for (int i = 0; i <= widht; i += 20)
-            {
-                g.DrawLine(Pens.Black, i, 0, i, height);
-            }
-            for (int i = 0; i <= height; i += 20)
-            {
-                g.DrawLine(Pens.Black, 0, i, widht, i);
-            }
+            Pen pen = new Pen(Color.Black) { Width = 2 };
+
+            g.DrawLine(pen, 1, 0, 1, height);
+            g.DrawLine(pen, widht, 0, widht, height);
+            g.DrawLine(pen, 0, 0, widht, 0);
+            g.DrawLine(pen, 0, height, widht, height);
+
+            g.FillRectangle(Brushes.LightSkyBlue, 0, 0, widht, height);
         }
 
 
         private void DrawFruit(Graphics g)
         {
-            g.FillRectangle(Brushes.Red, new Rectangle(new Point(fruit.X * sizeOfSides, fruit.Y * sizeOfSides), new Size(sizeOfSides, sizeOfSides)));
+            
+            g.DrawImage(Image.FromFile(@"Images\apple.png"), fruit.X * size, fruit.Y * size, size, size);
         }
 
         private void GenerateFruit()
         {
             Random rnd = new Random();
-            int x = rnd.Next(0, widht / sizeOfSides);
-            int y = rnd.Next(0, height / sizeOfSides);
+            int x = rnd.Next(0, widht / size);
+            int y = rnd.Next(0, height / size);
 
             Point position = new Point(x, y);
 

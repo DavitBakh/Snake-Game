@@ -4,7 +4,6 @@ E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\bin\Debug\net6.0-windows\SnakeGa
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\bin\Debug\net6.0-windows\SnakeGame.dll
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\bin\Debug\net6.0-windows\SnakeGame.pdb
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.csproj.AssemblyReference.cache
-E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.Form1.resources
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.csproj.GenerateResource.cache
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.GeneratedMSBuildEditorConfig.editorconfig
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.AssemblyInfoInputs.cache
@@ -15,3 +14,6 @@ E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\refint\
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.pdb
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.genruntimeconfig.cache
 E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\ref\SnakeGame.dll
+E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.FormMain.resources
+E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.FormStartMenu.resources
+E:\Cragravorum\VS Cragirner\SnakeGame\SnakeGame\obj\Debug\net6.0-windows\SnakeGame.Properties.Resources.resources
